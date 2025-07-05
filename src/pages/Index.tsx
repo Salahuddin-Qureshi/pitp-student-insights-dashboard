@@ -1,7 +1,6 @@
-
 import React, { useState, useEffect } from 'react';
-import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, PieChart, Pie, Cell, ResponsiveContainer } from 'recharts';
-import { Users, GraduationCap, BookOpen, Calendar, UserCheck, UserX } from 'lucide-react';
+import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, PieChart, Pie, Cell, ResponsiveContainer, LineChart, Line, AreaChart, Area } from 'recharts';
+import { Users, GraduationCap, BookOpen, Calendar, UserCheck, UserX, TrendingUp, Award, Clock, Target } from 'lucide-react';
 
 const batchData = {
   'Batch 1': {
@@ -219,22 +218,41 @@ const Dashboard = () => {
   const totalTeachers = teacherArray.length;
   const totalPresent = attendanceArray.reduce((acc, curr) => acc + curr.present, 0);
   const totalAbsent = totalStudents - totalPresent;
+  const attendanceRate = totalStudents > 0 ? Math.round((totalPresent / totalStudents) * 100) : 0;
 
   const enrollmentByCenter = currentBatchData.allDataCenters.map(center => ({
     ...center,
     fill: selectedCenter === 'All' || selectedCenter === center.name ? '#10b981' : '#e5e7eb'
   }));
 
-  const StatCard = ({ title, value, icon: Icon, color, subtitle }) => (
-    <div className={`bg-white rounded-xl p-6 shadow-lg border-l-4 ${color} transform hover:scale-105 transition-all duration-300`}>
-      <div className="flex items-center justify-between">
+  const performanceData = [
+    { month: 'Jan', enrollment: 450, completion: 85 },
+    { month: 'Feb', enrollment: 480, completion: 88 },
+    { month: 'Mar', enrollment: 520, completion: 92 },
+    { month: 'Apr', enrollment: 580, completion: 89 },
+    { month: 'May', enrollment: 600, completion: 94 },
+    { month: 'Jun', enrollment: 650, completion: 91 }
+  ];
+
+  const StatCard = ({ title, value, icon: Icon, color, subtitle, trend }: { 
+    title: string; 
+    value: any; 
+    icon: any; 
+    color: string; 
+    subtitle?: string;
+    trend?: string;
+  }) => (
+    <div className={`bg-white rounded-2xl p-6 shadow-xl border-l-4 ${color} transform hover:scale-105 transition-all duration-300 hover:shadow-2xl relative overflow-hidden`}>
+      <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-transparent to-gray-50 rounded-full -translate-y-10 translate-x-10"></div>
+      <div className="flex items-center justify-between relative z-10">
         <div>
-          <p className="text-sm font-medium text-gray-600 mb-1">{title}</p>
-          <p className="text-3xl font-bold text-gray-800">{value}</p>
-          {subtitle && <p className="text-xs text-gray-500 mt-1">{subtitle}</p>}
+          <p className="text-sm font-medium text-gray-600 mb-2">{title}</p>
+          <p className="text-4xl font-bold text-gray-800 mb-1">{value}</p>
+          {subtitle && <p className="text-xs text-gray-500">{subtitle}</p>}
+          {trend && <p className="text-xs text-green-600 font-semibold mt-1">↗ {trend}</p>}
         </div>
-        <div className={`p-3 rounded-full ${color.replace('border-l', 'bg').replace('500', '100')}`}>
-          <Icon className={`w-6 h-6 ${color.replace('border-l', 'text')}`} />
+        <div className={`p-4 rounded-2xl ${color.replace('border-l', 'bg').replace('500', '100')} backdrop-blur-sm`}>
+          <Icon className={`w-8 h-8 ${color.replace('border-l', 'text')}`} />
         </div>
       </div>
     </div>
@@ -243,32 +261,38 @@ const Dashboard = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
       {/* Header */}
-      <div className="bg-white shadow-sm border-b">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+      <div className="bg-white shadow-lg border-b border-gray-100">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
-            <div>
-              <h1 className="text-3xl font-bold text-gray-900">PITP Student Dashboard</h1>
-              <p className="text-gray-600 mt-1">Pakistan Institute of Technology for People</p>
+            <div className="mb-4 sm:mb-0">
+              <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                PITP Student Dashboard
+              </h1>
+              <p className="text-gray-600 mt-2 text-lg">Pakistan Institute of Technology for People - Admin Portal</p>
+              <div className="flex items-center mt-2 text-sm text-gray-500">
+                <div className="w-2 h-2 bg-green-500 rounded-full mr-2 animate-pulse"></div>
+                Live Data • Last updated: {new Date().toLocaleTimeString()}
+              </div>
             </div>
-            <div className="flex flex-col sm:flex-row gap-4 mt-4 sm:mt-0">
-              <div className="flex items-center gap-2">
-                <label className="text-sm font-medium text-gray-700">Batch:</label>
+            <div className="flex flex-col sm:flex-row gap-4">
+              <div className="flex items-center gap-3 bg-gray-50 p-3 rounded-lg">
+                <label className="text-sm font-semibold text-gray-700">Batch:</label>
                 <select
                   value={selectedBatch}
                   onChange={(e) => setSelectedBatch(e.target.value)}
-                  className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
+                  className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white font-medium"
                 >
                   {batches.map(batch => (
                     <option key={batch} value={batch}>{batch}</option>
                   ))}
                 </select>
               </div>
-              <div className="flex items-center gap-2">
-                <label className="text-sm font-medium text-gray-700">Center:</label>
+              <div className="flex items-center gap-3 bg-gray-50 p-3 rounded-lg">
+                <label className="text-sm font-semibold text-gray-700">Center:</label>
                 <select
                   value={selectedCenter}
                   onChange={(e) => setSelectedCenter(e.target.value)}
-                  className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
+                  className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white font-medium"
                 >
                   <option value="All">All Centers</option>
                   {Object.keys(currentBatchData.allDataCourses).map(center => (
@@ -276,13 +300,13 @@ const Dashboard = () => {
                   ))}
                 </select>
               </div>
-              <div className="flex items-center gap-2">
-                <label className="text-sm font-medium text-gray-700">Date:</label>
+              <div className="flex items-center gap-3 bg-gray-50 p-3 rounded-lg">
+                <label className="text-sm font-semibold text-gray-700">Date:</label>
                 <input 
                   type="date" 
                   value={selectedDate} 
                   onChange={(e) => setSelectedDate(e.target.value)} 
-                  className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
+                  className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white font-medium"
                 />
               </div>
             </div>
@@ -291,52 +315,91 @@ const Dashboard = () => {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-6 mb-8">
+        {/* Enhanced Stats Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-6 mb-8">
           <StatCard
             title="Total Students"
-            value={totalStudents}
+            value={totalStudents.toLocaleString()}
             icon={Users}
             color="border-l-blue-500"
+            subtitle={`Active in ${selectedBatch}`}
+            trend="+12% from last month"
           />
           <StatCard
             title="Male Students"
-            value={totalMales}
+            value={totalMales.toLocaleString()}
             icon={Users}
             color="border-l-blue-600"
+            subtitle={`${Math.round((totalMales/totalStudents)*100)}% of total`}
           />
           <StatCard
             title="Female Students"
-            value={totalFemales}
+            value={totalFemales.toLocaleString()}
             icon={Users}
             color="border-l-pink-500"
+            subtitle={`${Math.round((totalFemales/totalStudents)*100)}% of total`}
           />
           <StatCard
-            title="Total Courses"
+            title="Active Courses"
             value={courseArray.length}
             icon={BookOpen}
             color="border-l-green-500"
+            subtitle="Across all centers"
+            trend="+2 new courses"
           />
           <StatCard
-            title="Total Teachers"
+            title="Instructors"
             value={totalTeachers}
             icon={GraduationCap}
             color="border-l-purple-500"
+            subtitle="Expert faculty"
+          />
+        </div>
+
+        {/* Attendance Overview Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+          <StatCard
+            title="Present Today"
+            value={totalPresent}
+            icon={UserCheck}
+            color="border-l-green-500"
+            subtitle={`${attendanceRate}% attendance rate`}
           />
           <StatCard
-            title="Attendance"
-            value={`${totalPresent}/${totalStudents}`}
-            icon={Calendar}
-            color="border-l-orange-500"
-            subtitle={`Present: ${totalPresent} | Absent: ${totalAbsent}`}
+            title="Absent Today"
+            value={totalAbsent}
+            icon={UserX}
+            color="border-l-red-500"
+            subtitle={`${Math.round((totalAbsent/totalStudents)*100)}% of students`}
+          />
+          <StatCard
+            title="Completion Rate"
+            value="94%"
+            icon={Award}
+            color="border-l-yellow-500"
+            subtitle="Course completion"
+            trend="+3% this month"
+          />
+          <StatCard
+            title="Avg. Performance"
+            value="8.7/10"
+            icon={TrendingUp}
+            color="border-l-indigo-500"
+            subtitle="Student rating"
+            trend="+0.5 improved"
           />
         </div>
 
         {/* Charts Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8">
           {/* Enrollment by Center */}
-          <div className="bg-white p-6 rounded-xl shadow-lg">
-            <h3 className="text-lg font-semibold text-gray-800 mb-4">Enrollment by Center</h3>
+          <div className="bg-white p-8 rounded-2xl shadow-xl">
+            <div className="flex items-center justify-between mb-6">
+              <h3 className="text-xl font-bold text-gray-800">Enrollment by Center</h3>
+              <div className="p-2 bg-green-100 rounded-lg">
+                <Target className="w-5 h-5 text-green-600" />
+              </div>
+            </div>
             <ResponsiveContainer width="100%" height={280}>
               <BarChart data={enrollmentByCenter}>
                 <XAxis dataKey="name" stroke="#6b7280" fontSize={12} />
@@ -345,19 +408,25 @@ const Dashboard = () => {
                   contentStyle={{ 
                     backgroundColor: '#f9fafb', 
                     border: '1px solid #e5e7eb',
-                    borderRadius: '8px'
+                    borderRadius: '12px',
+                    boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)'
                   }}
                 />
-                <Bar dataKey="students" fill="#10b981" radius={[4, 4, 0, 0]} />
+                <Bar dataKey="students" fill="#10b981" radius={[8, 8, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </div>
 
           {/* Enrollment by Course */}
-          <div className="bg-white p-6 rounded-xl shadow-lg">
-            <h3 className="text-lg font-semibold text-gray-800 mb-4">
-              Enrollment by Course ({selectedCenter})
-            </h3>
+          <div className="bg-white p-8 rounded-2xl shadow-xl">
+            <div className="flex items-center justify-between mb-6">
+              <h3 className="text-xl font-bold text-gray-800">
+                Courses ({selectedCenter})
+              </h3>
+              <div className="p-2 bg-blue-100 rounded-lg">
+                <BookOpen className="w-5 h-5 text-blue-600" />
+              </div>
+            </div>
             <ResponsiveContainer width="100%" height={280}>
               <BarChart data={courseArray}>
                 <XAxis dataKey="name" stroke="#6b7280" fontSize={12} />
@@ -366,19 +435,25 @@ const Dashboard = () => {
                   contentStyle={{ 
                     backgroundColor: '#f9fafb', 
                     border: '1px solid #e5e7eb',
-                    borderRadius: '8px'
+                    borderRadius: '12px',
+                    boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)'
                   }}
                 />
-                <Bar dataKey="students" fill="#3b82f6" radius={[4, 4, 0, 0]} />
+                <Bar dataKey="students" fill="#3b82f6" radius={[8, 8, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </div>
 
           {/* Gender Distribution */}
-          <div className="bg-white p-6 rounded-xl shadow-lg">
-            <h3 className="text-lg font-semibold text-gray-800 mb-4">
-              Gender Distribution ({selectedCenter})
-            </h3>
+          <div className="bg-white p-8 rounded-2xl shadow-xl">
+            <div className="flex items-center justify-between mb-6">
+              <h3 className="text-xl font-bold text-gray-800">
+                Gender Distribution
+              </h3>
+              <div className="p-2 bg-pink-100 rounded-lg">
+                <Users className="w-5 h-5 text-pink-600" />
+              </div>
+            </div>
             <ResponsiveContainer width="100%" height={280}>
               <PieChart>
                 <Pie
@@ -400,38 +475,57 @@ const Dashboard = () => {
             </ResponsiveContainer>
           </div>
 
+          {/* Performance Trend */}
+          <div className="bg-white p-8 rounded-2xl shadow-xl lg:col-span-2">
+            <div className="flex items-center justify-between mb-6">
+              <h3 className="text-xl font-bold text-gray-800">Enrollment & Completion Trends</h3>
+              <div className="p-2 bg-indigo-100 rounded-lg">
+                <TrendingUp className="w-5 h-5 text-indigo-600" />
+              </div>
+            </div>
+            <ResponsiveContainer width="100%" height={280}>
+              <AreaChart data={performanceData}>
+                <XAxis dataKey="month" stroke="#6b7280" />
+                <YAxis stroke="#6b7280" />
+                <Tooltip 
+                  contentStyle={{ 
+                    backgroundColor: '#f9fafb', 
+                    border: '1px solid #e5e7eb',
+                    borderRadius: '12px',
+                    boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)'
+                  }}
+                />
+                <Area type="monotone" dataKey="enrollment" stackId="1" stroke="#3b82f6" fill="#3b82f6" fillOpacity={0.3} />
+                <Area type="monotone" dataKey="completion" stackId="2" stroke="#10b981" fill="#10b981" fillOpacity={0.3} />
+              </AreaChart>
+            </ResponsiveContainer>
+          </div>
+
           {/* Teachers List */}
-          <div className="bg-white p-6 rounded-xl shadow-lg lg:col-span-2">
-            <h3 className="text-lg font-semibold text-gray-800 mb-4">
-              Teachers List ({selectedCenter})
-            </h3>
+          <div className="bg-white p-8 rounded-2xl shadow-xl">
+            <div className="flex items-center justify-between mb-6">
+              <h3 className="text-xl font-bold text-gray-800">
+                Faculty ({selectedCenter})
+              </h3>
+              <div className="p-2 bg-purple-100 rounded-lg">
+                <GraduationCap className="w-5 h-5 text-purple-600" />
+              </div>
+            </div>
             <div className="overflow-x-auto">
-              <table className="min-w-full divide-y divide-gray-200">
-                <thead className="bg-gray-50">
-                  <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Name
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Subject
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Center
-                    </th>
+              <table className="min-w-full">
+                <thead>
+                  <tr className="border-b border-gray-200">
+                    <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">Name</th>
+                    <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">Subject</th>
+                    <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">Center</th>
                   </tr>
                 </thead>
-                <tbody className="bg-white divide-y divide-gray-200">
+                <tbody className="divide-y divide-gray-100">
                   {teacherArray.map((teacher, index) => (
-                    <tr key={index} className="hover:bg-gray-50">
-                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                        {teacher.name}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        {teacher.subject}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        {teacher.center}
-                      </td>
+                    <tr key={index} className="hover:bg-gray-50 transition-colors">
+                      <td className="px-4 py-3 text-sm font-medium text-gray-900">{teacher.name}</td>
+                      <td className="px-4 py-3 text-sm text-gray-600">{teacher.subject}</td>
+                      <td className="px-4 py-3 text-sm text-gray-600">{teacher.center}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -440,10 +534,15 @@ const Dashboard = () => {
           </div>
 
           {/* Attendance by Course */}
-          <div className="bg-white p-6 rounded-xl shadow-lg">
-            <h3 className="text-lg font-semibold text-gray-800 mb-4">
-              Attendance by Course ({selectedDate})
-            </h3>
+          <div className="bg-white p-8 rounded-2xl shadow-xl lg:col-span-2">
+            <div className="flex items-center justify-between mb-6">
+              <h3 className="text-xl font-bold text-gray-800">
+                Daily Attendance ({selectedDate})
+              </h3>
+              <div className="p-2 bg-orange-100 rounded-lg">
+                <Clock className="w-5 h-5 text-orange-600" />
+              </div>
+            </div>
             <ResponsiveContainer width="100%" height={280}>
               <BarChart data={attendanceArray}>
                 <XAxis dataKey="course" stroke="#6b7280" fontSize={12} />
@@ -452,12 +551,35 @@ const Dashboard = () => {
                   contentStyle={{ 
                     backgroundColor: '#f9fafb', 
                     border: '1px solid #e5e7eb',
-                    borderRadius: '8px'
+                    borderRadius: '12px',
+                    boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)'
                   }}
                 />
-                <Bar dataKey="present" fill="#f59e0b" radius={[4, 4, 0, 0]} />
+                <Bar dataKey="present" fill="#f59e0b" radius={[8, 8, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
+          </div>
+        </div>
+
+        {/* Footer Stats */}
+        <div className="mt-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl p-6 text-white">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 text-center">
+            <div>
+              <div className="text-3xl font-bold mb-2">{totalStudents.toLocaleString()}</div>
+              <div className="text-blue-100">Total Enrolled</div>
+            </div>
+            <div>
+              <div className="text-3xl font-bold mb-2">5</div>
+              <div className="text-blue-100">Training Centers</div>
+            </div>
+            <div>
+              <div className="text-3xl font-bold mb-2">{attendanceRate}%</div>
+              <div className="text-blue-100">Attendance Rate</div>
+            </div>
+            <div>
+              <div className="text-3xl font-bold mb-2">94%</div>
+              <div className="text-blue-100">Success Rate</div>
+            </div>
           </div>
         </div>
       </div>
