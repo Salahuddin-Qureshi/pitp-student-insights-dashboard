@@ -1,14 +1,31 @@
 import React, { useState, useEffect } from 'react';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, PieChart, Pie, Cell, ResponsiveContainer, LineChart, Line, AreaChart, Area } from 'recharts';
-import { Users, GraduationCap, BookOpen, Calendar, UserCheck, UserX, TrendingUp, Award, Clock, Target } from 'lucide-react';
+import { Users, GraduationCap, BookOpen, Calendar, UserCheck, UserX, TrendingUp, Award, Clock, Target, Search, Filter, Download } from 'lucide-react';
+import { Input } from '@/components/ui/input';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 const batchData = {
   'Batch 1': {
+    startDate: '2024-01-15',
+    endDate: '2024-06-15',
+    duration: '5 months',
     allDataCenters: [
       { name: 'Sukkur', students: 35 },
       { name: 'Khairpur', students: 32 },
       { name: 'Larkana', students: 30 },
       { name: 'Nawabshah', students: 28 }
+    ],
+    students: [
+      { id: 1, name: 'Ahmed Ali', city: 'Sukkur', course: 'Web Dev', email: 'ahmed.ali@email.com', contact: '+92-300-1234567' },
+      { id: 2, name: 'Fatima Khan', city: 'Sukkur', course: 'Graphic Design', email: 'fatima.khan@email.com', contact: '+92-301-2345678' },
+      { id: 3, name: 'Hassan Sheikh', city: 'Khairpur', course: 'Web Dev', email: 'hassan.sheikh@email.com', contact: '+92-302-3456789' },
+      { id: 4, name: 'Ayesha Malik', city: 'Khairpur', course: 'Graphic Design', email: 'ayesha.malik@email.com', contact: '+92-303-4567890' },
+      { id: 5, name: 'Usman Raza', city: 'Larkana', course: 'Web Dev', email: 'usman.raza@email.com', contact: '+92-304-5678901' },
+      { id: 6, name: 'Zara Ahmed', city: 'Larkana', course: 'Graphic Design', email: 'zara.ahmed@email.com', contact: '+92-305-6789012' },
+      { id: 7, name: 'Bilal Hussain', city: 'Nawabshah', course: 'Web Dev', email: 'bilal.hussain@email.com', contact: '+92-306-7890123' },
+      { id: 8, name: 'Sadia Noor', city: 'Nawabshah', course: 'Graphic Design', email: 'sadia.noor@email.com', contact: '+92-307-8901234' }
     ],
     allDataCourses: {
       Sukkur: [ { name: 'Web Dev', students: 18 }, { name: 'Graphic Design', students: 17 } ],
@@ -38,11 +55,24 @@ const batchData = {
     }
   },
   'Batch 2': {
+    startDate: '2024-07-01',
+    endDate: '2024-12-01',
+    duration: '5 months',
     allDataCenters: [
       { name: 'Sukkur', students: 45 },
       { name: 'Khairpur', students: 40 },
       { name: 'Larkana', students: 38 },
       { name: 'Nawabshah', students: 33 }
+    ],
+    students: [
+      { id: 1, name: 'Muhammad Tariq', city: 'Sukkur', course: 'AI', email: 'muhammad.tariq@email.com', contact: '+92-310-1234567' },
+      { id: 2, name: 'Kiran Batool', city: 'Sukkur', course: 'Web Dev', email: 'kiran.batool@email.com', contact: '+92-311-2345678' },
+      { id: 3, name: 'Shoaib Ahmad', city: 'Khairpur', course: 'AI', email: 'shoaib.ahmad@email.com', contact: '+92-312-3456789' },
+      { id: 4, name: 'Rubina Shah', city: 'Khairpur', course: 'Web Dev', email: 'rubina.shah@email.com', contact: '+92-313-4567890' },
+      { id: 5, name: 'Waseem Abbas', city: 'Larkana', course: 'AI', email: 'waseem.abbas@email.com', contact: '+92-314-5678901' },
+      { id: 6, name: 'Nadia Khatoon', city: 'Larkana', course: 'Web Dev', email: 'nadia.khatoon@email.com', contact: '+92-315-6789012' },
+      { id: 7, name: 'Kashif Brohi', city: 'Nawabshah', course: 'AI', email: 'kashif.brohi@email.com', contact: '+92-316-7890123' },
+      { id: 8, name: 'Shaista Parveen', city: 'Nawabshah', course: 'Web Dev', email: 'shaista.parveen@email.com', contact: '+92-317-8901234' }
     ],
     allDataCourses: {
       Sukkur: [ { name: 'AI', students: 25 }, { name: 'Web Dev', students: 20 } ],
@@ -72,12 +102,29 @@ const batchData = {
     }
   },
   'Batch 4': {
+    startDate: '2025-01-01',
+    endDate: '2025-06-30',
+    duration: '6 months',
     allDataCenters: [
       { name: 'Sukkur', students: 120 },
       { name: 'Khairpur', students: 120 },
       { name: 'Kandhkot', students: 120 },
       { name: 'Larkana', students: 120 },
       { name: 'Nawabshah', students: 120 },
+    ],
+    students: [
+      { id: 1, name: 'Ali Hassan', city: 'Sukkur', course: 'Web Development', email: 'ali.hassan@email.com', contact: '+92-320-1234567' },
+      { id: 2, name: 'Sara Ahmed', city: 'Sukkur', course: 'Python Programming', email: 'sara.ahmed@email.com', contact: '+92-321-2345678' },
+      { id: 3, name: 'Imran Shah', city: 'Sukkur', course: 'Graphic Design', email: 'imran.shah@email.com', contact: '+92-322-3456789' },
+      { id: 4, name: 'Zainab Malik', city: 'Khairpur', course: 'Artificial Intelligence', email: 'zainab.malik@email.com', contact: '+92-323-4567890' },
+      { id: 5, name: 'Fahad Brohi', city: 'Khairpur', course: 'Python Programming', email: 'fahad.brohi@email.com', contact: '+92-324-5678901' },
+      { id: 6, name: 'Hina Noor', city: 'Khairpur', course: 'Amazon FBA', email: 'hina.noor@email.com', contact: '+92-325-6789012' },
+      { id: 7, name: 'Asim Raza', city: 'Kandhkot', course: 'Web Development', email: 'asim.raza@email.com', contact: '+92-326-7890123' },
+      { id: 8, name: 'Mariam Khan', city: 'Kandhkot', course: 'Artificial Intelligence', email: 'mariam.khan@email.com', contact: '+92-327-8901234' },
+      { id: 9, name: 'Bilal Sheikh', city: 'Larkana', course: 'Python Programming', email: 'bilal.sheikh@email.com', contact: '+92-328-9012345' },
+      { id: 10, name: 'Sana Khatoon', city: 'Larkana', course: 'Graphic Design', email: 'sana.khatoon@email.com', contact: '+92-329-0123456' },
+      { id: 11, name: 'Omar Siddiqui', city: 'Nawabshah', course: 'Amazon FBA', email: 'omar.siddiqui@email.com', contact: '+92-330-1234567' },
+      { id: 12, name: 'Rabia Parveen', city: 'Nawabshah', course: 'Web Development', email: 'rabia.parveen@email.com', contact: '+92-331-2345678' }
     ],
     allDataCourses: {
       Sukkur: [
@@ -182,6 +229,7 @@ const Dashboard = () => {
   const [selectedDate, setSelectedDate] = useState('2025-07-01');
   const [selectedBatch, setSelectedBatch] = useState('Batch 4');
   const [currentBatchData, setCurrentBatchData] = useState(batchData['Batch 4']);
+  const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
     setCurrentBatchData(batchData[selectedBatch]);
@@ -233,6 +281,14 @@ const Dashboard = () => {
     { month: 'May', enrollment: 600, completion: 94 },
     { month: 'Jun', enrollment: 650, completion: 91 }
   ];
+
+  const filteredStudents = currentBatchData.students?.filter(student =>
+    student.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    student.city.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    student.course.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    student.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    student.contact.includes(searchTerm)
+  ) || [];
 
   const StatCard = ({ title, value, icon: Icon, color, subtitle, trend }: { 
     title: string; 
@@ -319,6 +375,34 @@ const Dashboard = () => {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Batch Information Section */}
+        <div className="mb-8">
+          <Card className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white shadow-2xl">
+            <CardHeader>
+              <CardTitle className="text-2xl font-bold flex items-center gap-3">
+                <Calendar className="w-8 h-8" />
+                {selectedBatch} Information
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4">
+                  <div className="text-sm opacity-90 mb-1">Start Date</div>
+                  <div className="text-2xl font-bold">{new Date(currentBatchData.startDate).toLocaleDateString()}</div>
+                </div>
+                <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4">
+                  <div className="text-sm opacity-90 mb-1">End Date</div>
+                  <div className="text-2xl font-bold">{new Date(currentBatchData.endDate).toLocaleDateString()}</div>
+                </div>
+                <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4">
+                  <div className="text-sm opacity-90 mb-1">Duration</div>
+                  <div className="text-2xl font-bold">{currentBatchData.duration}</div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
         {/* Enhanced Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-6 mb-8">
           <StatCard
@@ -392,6 +476,77 @@ const Dashboard = () => {
             subtitle="Student rating"
             trend="+0.5 improved"
           />
+        </div>
+
+        {/* Student List Section */}
+        <div className="mb-8">
+          <Card className="shadow-2xl border-0 bg-white/80 backdrop-blur-sm">
+            <CardHeader className="bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-t-lg">
+              <CardTitle className="text-2xl font-bold flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <Users className="w-8 h-8" />
+                  Student Directory ({selectedBatch})
+                </div>
+                <div className="flex items-center gap-4">
+                  <div className="relative">
+                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-white/70 w-4 h-4" />
+                    <Input
+                      placeholder="Search students..."
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                      className="pl-10 bg-white/20 border-white/30 text-white placeholder:text-white/70 focus:bg-white/30"
+                    />
+                  </div>
+                  <button className="bg-white/20 hover:bg-white/30 p-3 rounded-lg transition-colors">
+                    <Download className="w-5 h-5" />
+                  </button>
+                </div>
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="p-0">
+              <ScrollArea className="h-96">
+                <Table>
+                  <TableHeader>
+                    <TableRow className="bg-gray-50 hover:bg-gray-50">
+                      <TableHead className="font-bold text-gray-700">#</TableHead>
+                      <TableHead className="font-bold text-gray-700">Name</TableHead>
+                      <TableHead className="font-bold text-gray-700">City</TableHead>
+                      <TableHead className="font-bold text-gray-700">Course</TableHead>
+                      <TableHead className="font-bold text-gray-700">Email</TableHead>
+                      <TableHead className="font-bold text-gray-700">Contact</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {filteredStudents.map((student) => (
+                      <TableRow key={student.id} className="hover:bg-blue-50/50 transition-colors border-b border-gray-100">
+                        <TableCell className="font-medium text-gray-600">{student.id}</TableCell>
+                        <TableCell className="font-semibold text-gray-800">{student.name}</TableCell>
+                        <TableCell>
+                          <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium">
+                            {student.city}
+                          </span>
+                        </TableCell>
+                        <TableCell>
+                          <span className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">
+                            {student.course}
+                          </span>
+                        </TableCell>
+                        <TableCell className="text-gray-600">{student.email}</TableCell>
+                        <TableCell className="text-gray-600 font-mono">{student.contact}</TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </ScrollArea>
+              {filteredStudents.length === 0 && (
+                <div className="p-8 text-center text-gray-500">
+                  <Users className="w-12 h-12 mx-auto mb-4 text-gray-300" />
+                  <p className="text-lg font-medium">No students found</p>
+                  <p className="text-sm">Try adjusting your search criteria</p>
+                </div>
+              )}
+            </CardContent>
+          </Card>
         </div>
 
         {/* Charts Grid */}
