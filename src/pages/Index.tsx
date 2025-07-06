@@ -266,13 +266,6 @@ const Dashboard = () => {
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
             <div className="flex items-center justify-center w-full mb-6 sm:mb-0">
               <div className="text-center">
-                <div className="flex justify-center mb-4">
-                  <img 
-                    src="/lovable-uploads/3da68ccc-c51b-4193-905f-850c5f595275.png" 
-                    alt="PITP Logo" 
-                    className="h-24 w-auto object-contain"
-                  />
-                </div>
                 <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-2">
                   PITP Student Dashboard
                 </h1>
