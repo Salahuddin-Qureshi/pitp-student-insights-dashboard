@@ -263,59 +263,60 @@ const Dashboard = () => {
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
       {/* Header */}
       <div className="bg-white shadow-lg border-b border-gray-100">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
-            <div className="flex items-center justify-between w-full mb-4 sm:mb-0">
+            <div className="flex items-center justify-between w-full mb-6 sm:mb-0">
               {/* Left Logo - PITP */}
-              <div className="flex-shrink-0">
+              <div className="flex-shrink-0 bg-white p-3 rounded-xl shadow-md border-2 border-blue-100 hover:shadow-lg transition-shadow">
                 <img 
                   src="/lovable-uploads/3da68ccc-c51b-4193-905f-850c5f595275.png" 
                   alt="PITP Logo" 
-                  className="h-16 w-auto object-contain"
+                  className="h-20 w-auto object-contain"
                 />
               </div>
               
               {/* Center Content */}
               <div className="flex-1 text-center mx-8">
-                <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-2">
                   PITP Student Dashboard
                 </h1>
-                <p className="text-gray-600 mt-2 text-lg">Pakistan Institute of Technology for People - Admin Portal</p>
-                <div className="flex items-center justify-center mt-2 text-sm text-gray-500">
+                <p className="text-gray-600 text-lg font-medium mb-2">Pakistan Institute of Technology for People</p>
+                <p className="text-blue-600 font-semibold mb-2">Admin Portal</p>
+                <div className="flex items-center justify-center text-sm text-gray-500">
                   <div className="w-2 h-2 bg-green-500 rounded-full mr-2 animate-pulse"></div>
                   Live Data • Last updated: {new Date().toLocaleTimeString()}
                 </div>
               </div>
               
               {/* Right Logo - Sukkur IBA */}
-              <div className="flex-shrink-0">
+              <div className="flex-shrink-0 bg-white p-3 rounded-xl shadow-md border-2 border-purple-100 hover:shadow-lg transition-shadow">
                 <img 
                   src="/lovable-uploads/fac2a76c-a8a2-4be8-bd27-210e54bd25e7.png" 
                   alt="Sukkur IBA University Logo" 
-                  className="h-16 w-auto object-contain"
+                  className="h-20 w-auto object-contain"
                 />
               </div>
             </div>
             
             <div className="flex flex-col sm:flex-row gap-4 mt-4 sm:mt-0">
-              <div className="flex items-center gap-3 bg-gray-50 p-3 rounded-lg">
-                <label className="text-sm font-semibold text-gray-700">Batch:</label>
+              <div className="flex items-center gap-3 bg-gradient-to-r from-blue-50 to-blue-100 p-3 rounded-xl shadow-sm border border-blue-200">
+                <label className="text-sm font-bold text-blue-700">Batch:</label>
                 <select
                   value={selectedBatch}
                   onChange={(e) => setSelectedBatch(e.target.value)}
-                  className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white font-medium"
+                  className="px-4 py-2 border-2 border-blue-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white font-medium shadow-sm hover:shadow-md transition-shadow"
                 >
                   {batches.map(batch => (
                     <option key={batch} value={batch}>{batch}</option>
                   ))}
                 </select>
               </div>
-              <div className="flex items-center gap-3 bg-gray-50 p-3 rounded-lg">
-                <label className="text-sm font-semibold text-gray-700">Center:</label>
+              <div className="flex items-center gap-3 bg-gradient-to-r from-green-50 to-green-100 p-3 rounded-xl shadow-sm border border-green-200">
+                <label className="text-sm font-bold text-green-700">Center:</label>
                 <select
                   value={selectedCenter}
                   onChange={(e) => setSelectedCenter(e.target.value)}
-                  className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white font-medium"
+                  className="px-4 py-2 border-2 border-green-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 bg-white font-medium shadow-sm hover:shadow-md transition-shadow"
                 >
                   <option value="All">All Centers</option>
                   {Object.keys(currentBatchData.allDataCourses).map(center => (
@@ -323,13 +324,13 @@ const Dashboard = () => {
                   ))}
                 </select>
               </div>
-              <div className="flex items-center gap-3 bg-gray-50 p-3 rounded-lg">
-                <label className="text-sm font-semibold text-gray-700">Date:</label>
+              <div className="flex items-center gap-3 bg-gradient-to-r from-purple-50 to-purple-100 p-3 rounded-xl shadow-sm border border-purple-200">
+                <label className="text-sm font-bold text-purple-700">Date:</label>
                 <input 
                   type="date" 
                   value={selectedDate} 
                   onChange={(e) => setSelectedDate(e.target.value)} 
-                  className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white font-medium"
+                  className="px-4 py-2 border-2 border-purple-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 bg-white font-medium shadow-sm hover:shadow-md transition-shadow"
                 />
               </div>
             </div>
