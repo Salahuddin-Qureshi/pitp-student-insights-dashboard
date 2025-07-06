@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, PieChart, Pie, Cell, ResponsiveContainer, LineChart, Line, AreaChart, Area } from 'recharts';
 import { Users, GraduationCap, BookOpen, Calendar, UserCheck, UserX, TrendingUp, Award, Clock, Target } from 'lucide-react';
@@ -265,18 +264,15 @@ const Dashboard = () => {
       <div className="bg-white shadow-lg border-b border-gray-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
-            <div className="flex items-center justify-between w-full mb-6 sm:mb-0">
-              {/* Left Logo - PITP */}
-              <div className="flex-shrink-0 bg-white p-3 rounded-xl shadow-md border-2 border-blue-100 hover:shadow-lg transition-shadow">
-                <img 
-                  src="/lovable-uploads/3da68ccc-c51b-4193-905f-850c5f595275.png" 
-                  alt="PITP Logo" 
-                  className="h-20 w-auto object-contain"
-                />
-              </div>
-              
-              {/* Center Content */}
-              <div className="flex-1 text-center mx-8">
+            <div className="flex items-center justify-center w-full mb-6 sm:mb-0">
+              <div className="text-center">
+                <div className="flex justify-center mb-4">
+                  <img 
+                    src="/lovable-uploads/3da68ccc-c51b-4193-905f-850c5f595275.png" 
+                    alt="PITP Logo" 
+                    className="h-24 w-auto object-contain"
+                  />
+                </div>
                 <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-2">
                   PITP Student Dashboard
                 </h1>
@@ -286,15 +282,6 @@ const Dashboard = () => {
                   <div className="w-2 h-2 bg-green-500 rounded-full mr-2 animate-pulse"></div>
                   Live Data • Last updated: {new Date().toLocaleTimeString()}
                 </div>
-              </div>
-              
-              {/* Right Logo - Sukkur IBA */}
-              <div className="flex-shrink-0 bg-white p-3 rounded-xl shadow-md border-2 border-purple-100 hover:shadow-lg transition-shadow">
-                <img 
-                  src="/lovable-uploads/fac2a76c-a8a2-4be8-bd27-210e54bd25e7.png" 
-                  alt="Sukkur IBA University Logo" 
-                  className="h-20 w-auto object-contain"
-                />
               </div>
             </div>
             
