@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, PieChart, Pie, Cell, ResponsiveContainer, LineChart, Line, AreaChart, Area } from 'recharts';
 import { Users, GraduationCap, BookOpen, Calendar, UserCheck, UserX, TrendingUp, Award, Clock, Target } from 'lucide-react';
@@ -264,17 +265,39 @@ const Dashboard = () => {
       <div className="bg-white shadow-lg border-b border-gray-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
-            <div className="mb-4 sm:mb-0">
-              <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                PITP Student Dashboard
-              </h1>
-              <p className="text-gray-600 mt-2 text-lg">Pakistan Institute of Technology for People - Admin Portal</p>
-              <div className="flex items-center mt-2 text-sm text-gray-500">
-                <div className="w-2 h-2 bg-green-500 rounded-full mr-2 animate-pulse"></div>
-                Live Data • Last updated: {new Date().toLocaleTimeString()}
+            <div className="flex items-center justify-between w-full mb-4 sm:mb-0">
+              {/* Left Logo - PITP */}
+              <div className="flex-shrink-0">
+                <img 
+                  src="/lovable-uploads/3da68ccc-c51b-4193-905f-850c5f595275.png" 
+                  alt="PITP Logo" 
+                  className="h-16 w-auto object-contain"
+                />
+              </div>
+              
+              {/* Center Content */}
+              <div className="flex-1 text-center mx-8">
+                <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                  PITP Student Dashboard
+                </h1>
+                <p className="text-gray-600 mt-2 text-lg">Pakistan Institute of Technology for People - Admin Portal</p>
+                <div className="flex items-center justify-center mt-2 text-sm text-gray-500">
+                  <div className="w-2 h-2 bg-green-500 rounded-full mr-2 animate-pulse"></div>
+                  Live Data • Last updated: {new Date().toLocaleTimeString()}
+                </div>
+              </div>
+              
+              {/* Right Logo - Sukkur IBA */}
+              <div className="flex-shrink-0">
+                <img 
+                  src="/lovable-uploads/fac2a76c-a8a2-4be8-bd27-210e54bd25e7.png" 
+                  alt="Sukkur IBA University Logo" 
+                  className="h-16 w-auto object-contain"
+                />
               </div>
             </div>
-            <div className="flex flex-col sm:flex-row gap-4">
+            
+            <div className="flex flex-col sm:flex-row gap-4 mt-4 sm:mt-0">
               <div className="flex items-center gap-3 bg-gray-50 p-3 rounded-lg">
                 <label className="text-sm font-semibold text-gray-700">Batch:</label>
                 <select
