@@ -375,32 +375,22 @@ const Dashboard = () => {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Compact Batch Information Section */}
+        {/* Current Batch Information Section */}
         <div className="mb-8">
           <Card className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white shadow-2xl">
             <CardHeader className="pb-3">
               <CardTitle className="text-xl font-bold flex items-center gap-3">
                 <Calendar className="w-6 h-6" />
-                Batch Information
+                Batch Information - {selectedBatch}
               </CardTitle>
             </CardHeader>
             <CardContent className="pt-0">
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                {/* Current Batch Info */}
-                <div className="bg-white/10 backdrop-blur-sm rounded-xl p-3">
-                  <div className="text-xs opacity-90 mb-1">{selectedBatch}</div>
-                  <div className="text-sm font-bold">{new Date(currentBatchData.startDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })} - {new Date(currentBatchData.endDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</div>
-                  <div className="text-xs opacity-75">{currentBatchData.duration}</div>
+              <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4">
+                <div className="text-sm font-bold mb-1">
+                  {new Date(currentBatchData.startDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })} - 
+                  {new Date(currentBatchData.endDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
                 </div>
-                
-                {/* Other Batches */}
-                {batches.filter(batch => batch !== selectedBatch).map(batch => (
-                  <div key={batch} className="bg-white/10 backdrop-blur-sm rounded-xl p-3">
-                    <div className="text-xs opacity-90 mb-1">{batch}</div>
-                    <div className="text-sm font-bold">{new Date(batchData[batch].startDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })} - {new Date(batchData[batch].endDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</div>
-                    <div className="text-xs opacity-75">{batchData[batch].duration}</div>
-                  </div>
-                ))}
+                <div className="text-xs opacity-90">Duration: {currentBatchData.duration}</div>
               </div>
             </CardContent>
           </Card>
@@ -409,7 +399,7 @@ const Dashboard = () => {
         {/* Enhanced Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-6 mb-8">
           <StatCard
-            title="Total Students"
+            title="Total Enrolled"
             value={totalStudents.toLocaleString()}
             icon={Users}
             color="border-l-blue-500"
@@ -417,67 +407,33 @@ const Dashboard = () => {
             trend="+12% from last month"
           />
           <StatCard
-            title="Male Students"
-            value={totalMales.toLocaleString()}
-            icon={Users}
-            color="border-l-blue-600"
-            subtitle={`${Math.round((totalMales/totalStudents)*100)}% of total`}
+            title="Training Centers"
+            value={currentBatchData.allDataCenters.length}
+            icon={Target}
+            color="border-l-green-500"
+            subtitle="Active locations"
           />
           <StatCard
-            title="Female Students"
-            value={totalFemales.toLocaleString()}
-            icon={Users}
-            color="border-l-pink-500"
-            subtitle={`${Math.round((totalFemales/totalStudents)*100)}% of total`}
+            title="Attendance Rate"
+            value={`${attendanceRate}%`}
+            icon={UserCheck}
+            color="border-l-yellow-500"
+            subtitle="Daily average"
+          />
+          <StatCard
+            title="Success Rate"
+            value="94%"
+            icon={Award}
+            color="border-l-purple-500"
+            subtitle="Course completion"
+            trend="+3% this month"
           />
           <StatCard
             title="Active Courses"
             value={courseArray.length}
             icon={BookOpen}
-            color="border-l-green-500"
-            subtitle="Across all centers"
-            trend="+2 new courses"
-          />
-          <StatCard
-            title="Instructors"
-            value={totalTeachers}
-            icon={GraduationCap}
-            color="border-l-purple-500"
-            subtitle="Expert faculty"
-          />
-        </div>
-
-        {/* Attendance Overview Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-          <StatCard
-            title="Present Today"
-            value={totalPresent}
-            icon={UserCheck}
-            color="border-l-green-500"
-            subtitle={`${attendanceRate}% attendance rate`}
-          />
-          <StatCard
-            title="Absent Today"
-            value={totalAbsent}
-            icon={UserX}
-            color="border-l-red-500"
-            subtitle={`${Math.round((totalAbsent/totalStudents)*100)}% of students`}
-          />
-          <StatCard
-            title="Completion Rate"
-            value="94%"
-            icon={Award}
-            color="border-l-yellow-500"
-            subtitle="Course completion"
-            trend="+3% this month"
-          />
-          <StatCard
-            title="Avg. Performance"
-            value="8.7/10"
-            icon={TrendingUp}
             color="border-l-indigo-500"
-            subtitle="Student rating"
-            trend="+0.5 improved"
+            subtitle="Across all centers"
           />
         </div>
 
