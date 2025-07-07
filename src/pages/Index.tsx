@@ -683,36 +683,52 @@ const Dashboard = () => {
           </div>
         </div>
 
-        {/* Bottom Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <StatCard
-            title="Total Enrolled"
-            value="480"
-            icon={Users}
-            color="border-l-blue-500"
-            subtitle="All batches combined"
-          />
-          <StatCard
-            title="Training Centers"
-            value="5"
-            icon={Target}
-            color="border-l-green-500"
-            subtitle="Active locations"
-          />
-          <StatCard
-            title="Attendance Rate"
-            value="43%"
-            icon={UserCheck}
-            color="border-l-yellow-500"
-            subtitle="Overall average"
-          />
-          <StatCard
-            title="Success Rate"
-            value="94%"
-            icon={Award}
-            color="border-l-purple-500"
-            subtitle="Course completion"
-          />
+        {/* Bottom Overall Stats Card */}
+        <div className="mb-8">
+          <Card className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white shadow-2xl">
+            <CardHeader className="pb-3">
+              <CardTitle className="text-xl font-bold flex items-center gap-3">
+                <TrendingUp className="w-6 h-6" />
+                Overall Statistics
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="pt-0">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 text-center">
+                  <div className="flex items-center justify-center mb-2">
+                    <Users className="w-8 h-8 text-white" />
+                  </div>
+                  <div className="text-3xl font-bold mb-1">480</div>
+                  <div className="text-sm opacity-90">Total Enrolled</div>
+                  <div className="text-xs opacity-75">All batches combined</div>
+                </div>
+                <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 text-center">
+                  <div className="flex items-center justify-center mb-2">
+                    <Target className="w-8 h-8 text-white" />
+                  </div>
+                  <div className="text-3xl font-bold mb-1">5</div>
+                  <div className="text-sm opacity-90">Training Centers</div>
+                  <div className="text-xs opacity-75">Active locations</div>
+                </div>
+                <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 text-center">
+                  <div className="flex items-center justify-center mb-2">
+                    <UserCheck className="w-8 h-8 text-white" />
+                  </div>
+                  <div className="text-3xl font-bold mb-1">43%</div>
+                  <div className="text-sm opacity-90">Attendance Rate</div>
+                  <div className="text-xs opacity-75">Overall average</div>
+                </div>
+                <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 text-center">
+                  <div className="flex items-center justify-center mb-2">
+                    <Award className="w-8 h-8 text-white" />
+                  </div>
+                  <div className="text-3xl font-bold mb-1">94%</div>
+                  <div className="text-sm opacity-90">Success Rate</div>
+                  <div className="text-xs opacity-75">Course completion</div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
         </div>
       </div>
     </div>
