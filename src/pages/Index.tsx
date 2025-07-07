@@ -321,15 +321,22 @@ const Dashboard = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
             <div className="flex items-center justify-center w-full mb-6 sm:mb-0">
-              <div className="text-center">
-                <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-2">
-                  PITP Student Dashboard
-                </h1>
-                <p className="text-gray-600 text-lg font-medium mb-2">Pakistan Institute of Technology for People</p>
-                <p className="text-blue-600 font-semibold mb-2">Admin Portal</p>
-                <div className="flex items-center justify-center text-sm text-gray-500">
-                  <div className="w-2 h-2 bg-green-500 rounded-full mr-2 animate-pulse"></div>
-                  Live Data • Last updated: {new Date().toLocaleTimeString()}
+              <div className="text-center flex items-center gap-4">
+                <img 
+                  src="/lovable-uploads/3da68ccc-c51b-4193-905f-850c5f595275.png" 
+                  alt="PITP Logo" 
+                  className="w-16 h-16 object-contain"
+                />
+                <div>
+                  <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-2">
+                    PITP Student Dashboard
+                  </h1>
+                  <p className="text-gray-600 text-lg font-medium mb-2">Pakistan Institute of Technology for People</p>
+                  <p className="text-blue-600 font-semibold mb-2">Admin Portal</p>
+                  <div className="flex items-center justify-center text-sm text-gray-500">
+                    <div className="w-2 h-2 bg-green-500 rounded-full mr-2 animate-pulse"></div>
+                    Live Data • Last updated: {new Date().toLocaleTimeString()}
+                  </div>
                 </div>
               </div>
             </div>
@@ -385,7 +392,7 @@ const Dashboard = () => {
               </CardTitle>
             </CardHeader>
             <CardContent className="pt-0">
-              <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4">
+              <div className="bg-white/10 backdrop-blur-sm rounded-xl p-3">
                 <div className="text-sm font-bold mb-1">
                   {new Date(currentBatchData.startDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })} - 
                   {new Date(currentBatchData.endDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
@@ -621,7 +628,7 @@ const Dashboard = () => {
         </div>
 
         {/* Remaining Charts */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
           {/* Performance Trend */}
           <div className="bg-white p-8 rounded-2xl shadow-xl">
             <div className="flex items-center justify-between mb-6">
@@ -674,6 +681,38 @@ const Dashboard = () => {
               </BarChart>
             </ResponsiveContainer>
           </div>
+        </div>
+
+        {/* Bottom Stats Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <StatCard
+            title="Total Enrolled"
+            value="480"
+            icon={Users}
+            color="border-l-blue-500"
+            subtitle="All batches combined"
+          />
+          <StatCard
+            title="Training Centers"
+            value="5"
+            icon={Target}
+            color="border-l-green-500"
+            subtitle="Active locations"
+          />
+          <StatCard
+            title="Attendance Rate"
+            value="43%"
+            icon={UserCheck}
+            color="border-l-yellow-500"
+            subtitle="Overall average"
+          />
+          <StatCard
+            title="Success Rate"
+            value="94%"
+            icon={Award}
+            color="border-l-purple-500"
+            subtitle="Course completion"
+          />
         </div>
       </div>
     </div>
