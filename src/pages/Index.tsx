@@ -375,29 +375,32 @@ const Dashboard = () => {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Batch Information Section */}
+        {/* Compact Batch Information Section */}
         <div className="mb-8">
           <Card className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white shadow-2xl">
-            <CardHeader>
-              <CardTitle className="text-2xl font-bold flex items-center gap-3">
-                <Calendar className="w-8 h-8" />
-                {selectedBatch} Information
+            <CardHeader className="pb-3">
+              <CardTitle className="text-xl font-bold flex items-center gap-3">
+                <Calendar className="w-6 h-6" />
+                Batch Information
               </CardTitle>
             </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4">
-                  <div className="text-sm opacity-90 mb-1">Start Date</div>
-                  <div className="text-2xl font-bold">{new Date(currentBatchData.startDate).toLocaleDateString()}</div>
+            <CardContent className="pt-0">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                {/* Current Batch Info */}
+                <div className="bg-white/10 backdrop-blur-sm rounded-xl p-3">
+                  <div className="text-xs opacity-90 mb-1">{selectedBatch}</div>
+                  <div className="text-sm font-bold">{new Date(currentBatchData.startDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })} - {new Date(currentBatchData.endDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</div>
+                  <div className="text-xs opacity-75">{currentBatchData.duration}</div>
                 </div>
-                <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4">
-                  <div className="text-sm opacity-90 mb-1">End Date</div>
-                  <div className="text-2xl font-bold">{new Date(currentBatchData.endDate).toLocaleDateString()}</div>
-                </div>
-                <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4">
-                  <div className="text-sm opacity-90 mb-1">Duration</div>
-                  <div className="text-2xl font-bold">{currentBatchData.duration}</div>
-                </div>
+                
+                {/* Other Batches */}
+                {batches.filter(batch => batch !== selectedBatch).map(batch => (
+                  <div key={batch} className="bg-white/10 backdrop-blur-sm rounded-xl p-3">
+                    <div className="text-xs opacity-90 mb-1">{batch}</div>
+                    <div className="text-sm font-bold">{new Date(batchData[batch].startDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })} - {new Date(batchData[batch].endDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</div>
+                    <div className="text-xs opacity-75">{batchData[batch].duration}</div>
+                  </div>
+                ))}
               </div>
             </CardContent>
           </Card>
@@ -478,79 +481,8 @@ const Dashboard = () => {
           />
         </div>
 
-        {/* Student List Section */}
-        <div className="mb-8">
-          <Card className="shadow-2xl border-0 bg-white/80 backdrop-blur-sm">
-            <CardHeader className="bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-t-lg">
-              <CardTitle className="text-2xl font-bold flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <Users className="w-8 h-8" />
-                  Student Directory ({selectedBatch})
-                </div>
-                <div className="flex items-center gap-4">
-                  <div className="relative">
-                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-white/70 w-4 h-4" />
-                    <Input
-                      placeholder="Search students..."
-                      value={searchTerm}
-                      onChange={(e) => setSearchTerm(e.target.value)}
-                      className="pl-10 bg-white/20 border-white/30 text-white placeholder:text-white/70 focus:bg-white/30"
-                    />
-                  </div>
-                  <button className="bg-white/20 hover:bg-white/30 p-3 rounded-lg transition-colors">
-                    <Download className="w-5 h-5" />
-                  </button>
-                </div>
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="p-0">
-              <ScrollArea className="h-96">
-                <Table>
-                  <TableHeader>
-                    <TableRow className="bg-gray-50 hover:bg-gray-50">
-                      <TableHead className="font-bold text-gray-700">#</TableHead>
-                      <TableHead className="font-bold text-gray-700">Name</TableHead>
-                      <TableHead className="font-bold text-gray-700">City</TableHead>
-                      <TableHead className="font-bold text-gray-700">Course</TableHead>
-                      <TableHead className="font-bold text-gray-700">Email</TableHead>
-                      <TableHead className="font-bold text-gray-700">Contact</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {filteredStudents.map((student) => (
-                      <TableRow key={student.id} className="hover:bg-blue-50/50 transition-colors border-b border-gray-100">
-                        <TableCell className="font-medium text-gray-600">{student.id}</TableCell>
-                        <TableCell className="font-semibold text-gray-800">{student.name}</TableCell>
-                        <TableCell>
-                          <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium">
-                            {student.city}
-                          </span>
-                        </TableCell>
-                        <TableCell>
-                          <span className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">
-                            {student.course}
-                          </span>
-                        </TableCell>
-                        <TableCell className="text-gray-600">{student.email}</TableCell>
-                        <TableCell className="text-gray-600 font-mono">{student.contact}</TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </ScrollArea>
-              {filteredStudents.length === 0 && (
-                <div className="p-8 text-center text-gray-500">
-                  <Users className="w-12 h-12 mx-auto mb-4 text-gray-300" />
-                  <p className="text-lg font-medium">No students found</p>
-                  <p className="text-sm">Try adjusting your search criteria</p>
-                </div>
-              )}
-            </CardContent>
-          </Card>
-        </div>
-
         {/* Charts Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8 mb-8">
           {/* Enrollment by Center */}
           <div className="bg-white p-8 rounded-2xl shadow-xl">
             <div className="flex items-center justify-between mb-6">
@@ -633,9 +565,109 @@ const Dashboard = () => {
               </PieChart>
             </ResponsiveContainer>
           </div>
+        </div>
 
+        {/* Student and Teacher Information in One Row */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+          {/* Student List Section */}
+          <div>
+            <Card className="shadow-2xl border-0 bg-white/80 backdrop-blur-sm h-full">
+              <CardHeader className="bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-t-lg">
+                <CardTitle className="text-xl font-bold flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <Users className="w-6 h-6" />
+                    Students ({selectedBatch})
+                  </div>
+                  <div className="flex items-center gap-4">
+                    <div className="relative">
+                      <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-white/70 w-4 h-4" />
+                      <Input
+                        placeholder="Search students..."
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                        className="pl-10 bg-white/20 border-white/30 text-white placeholder:text-white/70 focus:bg-white/30"
+                      />
+                    </div>
+                    <button className="bg-white/20 hover:bg-white/30 p-2 rounded-lg transition-colors">
+                      <Download className="w-4 h-4" />
+                    </button>
+                  </div>
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="p-0">
+                <ScrollArea className="h-96">
+                  <Table>
+                    <TableHeader>
+                      <TableRow className="bg-gray-50 hover:bg-gray-50">
+                        <TableHead className="font-bold text-gray-700 text-xs">Name</TableHead>
+                        <TableHead className="font-bold text-gray-700 text-xs">City</TableHead>
+                        <TableHead className="font-bold text-gray-700 text-xs">Course</TableHead>
+                        <TableHead className="font-bold text-gray-700 text-xs">Contact</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {filteredStudents.map((student) => (
+                        <TableRow key={student.id} className="hover:bg-blue-50/50 transition-colors border-b border-gray-100">
+                          <TableCell className="font-semibold text-gray-800 text-sm">{student.name}</TableCell>
+                          <TableCell>
+                            <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs font-medium">
+                              {student.city}
+                            </span>
+                          </TableCell>
+                          <TableCell>
+                            <span className="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs font-medium">
+                              {student.course}
+                            </span>
+                          </TableCell>
+                          <TableCell className="text-gray-600 text-xs">{student.contact}</TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </ScrollArea>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Teachers List */}
+          <div>
+            <Card className="shadow-2xl border-0 bg-white/80 backdrop-blur-sm h-full">
+              <CardHeader className="bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-t-lg">
+                <CardTitle className="text-xl font-bold flex items-center gap-3">
+                  <GraduationCap className="w-6 h-6" />
+                  Faculty ({selectedCenter})
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="p-6">
+                <div className="overflow-x-auto">
+                  <table className="min-w-full">
+                    <thead>
+                      <tr className="border-b border-gray-200">
+                        <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">Name</th>
+                        <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">Subject</th>
+                        <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">Center</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-gray-100">
+                      {teacherArray.map((teacher, index) => (
+                        <tr key={index} className="hover:bg-gray-50 transition-colors">
+                          <td className="px-4 py-3 text-sm font-medium text-gray-900">{teacher.name}</td>
+                          <td className="px-4 py-3 text-sm text-gray-600">{teacher.subject}</td>
+                          <td className="px-4 py-3 text-sm text-gray-600">{teacher.center}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+
+        {/* Remaining Charts */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Performance Trend */}
-          <div className="bg-white p-8 rounded-2xl shadow-xl lg:col-span-2">
+          <div className="bg-white p-8 rounded-2xl shadow-xl">
             <div className="flex items-center justify-between mb-6">
               <h3 className="text-xl font-bold text-gray-800">Enrollment & Completion Trends</h3>
               <div className="p-2 bg-indigo-100 rounded-lg">
@@ -660,40 +692,8 @@ const Dashboard = () => {
             </ResponsiveContainer>
           </div>
 
-          {/* Teachers List */}
-          <div className="bg-white p-8 rounded-2xl shadow-xl">
-            <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xl font-bold text-gray-800">
-                Faculty ({selectedCenter})
-              </h3>
-              <div className="p-2 bg-purple-100 rounded-lg">
-                <GraduationCap className="w-5 h-5 text-purple-600" />
-              </div>
-            </div>
-            <div className="overflow-x-auto">
-              <table className="min-w-full">
-                <thead>
-                  <tr className="border-b border-gray-200">
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">Name</th>
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">Subject</th>
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">Center</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-gray-100">
-                  {teacherArray.map((teacher, index) => (
-                    <tr key={index} className="hover:bg-gray-50 transition-colors">
-                      <td className="px-4 py-3 text-sm font-medium text-gray-900">{teacher.name}</td>
-                      <td className="px-4 py-3 text-sm text-gray-600">{teacher.subject}</td>
-                      <td className="px-4 py-3 text-sm text-gray-600">{teacher.center}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-
           {/* Attendance by Course */}
-          <div className="bg-white p-8 rounded-2xl shadow-xl lg:col-span-2">
+          <div className="bg-white p-8 rounded-2xl shadow-xl">
             <div className="flex items-center justify-between mb-6">
               <h3 className="text-xl font-bold text-gray-800">
                 Daily Attendance ({selectedDate})
@@ -717,28 +717,6 @@ const Dashboard = () => {
                 <Bar dataKey="present" fill="#f59e0b" radius={[8, 8, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
-          </div>
-        </div>
-
-        {/* Footer Stats */}
-        <div className="mt-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl p-6 text-white">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 text-center">
-            <div>
-              <div className="text-3xl font-bold mb-2">{totalStudents.toLocaleString()}</div>
-              <div className="text-blue-100">Total Enrolled</div>
-            </div>
-            <div>
-              <div className="text-3xl font-bold mb-2">5</div>
-              <div className="text-blue-100">Training Centers</div>
-            </div>
-            <div>
-              <div className="text-3xl font-bold mb-2">{attendanceRate}%</div>
-              <div className="text-blue-100">Attendance Rate</div>
-            </div>
-            <div>
-              <div className="text-3xl font-bold mb-2">94%</div>
-              <div className="text-blue-100">Success Rate</div>
-            </div>
           </div>
         </div>
       </div>
