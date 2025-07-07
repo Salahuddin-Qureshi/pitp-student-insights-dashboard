@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, PieChart, Pie, Cell, ResponsiveContainer, LineChart, Line, AreaChart, Area } from 'recharts';
 import { Users, GraduationCap, BookOpen, Calendar, UserCheck, UserX, TrendingUp, Award, Clock, Target, Search, Filter, Download } from 'lucide-react';
@@ -404,7 +405,7 @@ const Dashboard = () => {
         </div>
 
         {/* Enhanced Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-6 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-6 gap-6 mb-8">
           <StatCard
             title="Total Enrolled"
             value={totalStudents.toLocaleString()}
@@ -414,26 +415,32 @@ const Dashboard = () => {
             trend="+12% from last month"
           />
           <StatCard
-            title="Training Centers"
-            value={currentBatchData.allDataCenters.length}
-            icon={Target}
+            title="Present Today"
+            value={totalPresent.toLocaleString()}
+            icon={UserCheck}
             color="border-l-green-500"
-            subtitle="Active locations"
+            subtitle={`${selectedDate}`}
+          />
+          <StatCard
+            title="Absent Today"
+            value={totalAbsent.toLocaleString()}
+            icon={UserX}
+            color="border-l-red-500"
+            subtitle={`${selectedDate}`}
           />
           <StatCard
             title="Attendance Rate"
             value={`${attendanceRate}%`}
-            icon={UserCheck}
+            icon={Clock}
             color="border-l-yellow-500"
             subtitle="Daily average"
           />
           <StatCard
-            title="Success Rate"
-            value="94%"
-            icon={Award}
+            title="Training Centers"
+            value={currentBatchData.allDataCenters.length}
+            icon={Target}
             color="border-l-purple-500"
-            subtitle="Course completion"
-            trend="+3% this month"
+            subtitle="Active locations"
           />
           <StatCard
             title="Active Courses"
