@@ -299,7 +299,7 @@ const Dashboard = () => {
     subtitle?: string;
     trend?: string;
   }) => (
-    <div className={`bg-white rounded-2xl p-6 shadow-xl border-l-4 ${color} transform hover:scale-105 transition-all duration-300 hover:shadow-2xl relative overflow-hidden`}>
+    <div className={`bg-white rounded-2xl p-6 shadow-xl border-l-4 ${color} transform hover:scale-105 transition-all duration-300 hover:shadow-2xl relative overflow-hidden min-w-[280px] flex-1`}>
       <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-transparent to-gray-50 rounded-full -translate-y-10 translate-x-10"></div>
       <div className="flex items-center justify-between relative z-10">
         <div>
@@ -404,8 +404,8 @@ const Dashboard = () => {
           </Card>
         </div>
 
-        {/* Enhanced Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-6 gap-6 mb-8">
+        {/* Enhanced Stats Cards with Flexible Layout */}
+        <div className="flex flex-wrap gap-6 mb-8">
           <StatCard
             title="Total Enrolled"
             value={totalStudents.toLocaleString()}
@@ -415,32 +415,18 @@ const Dashboard = () => {
             trend="+12% from last month"
           />
           <StatCard
-            title="Present Today"
-            value={totalPresent.toLocaleString()}
-            icon={UserCheck}
-            color="border-l-green-500"
-            subtitle={`${selectedDate}`}
+            title="Male Students"
+            value={totalMales.toLocaleString()}
+            icon={Users}
+            color="border-l-blue-400"
+            subtitle={`${Math.round((totalMales / totalStudents) * 100)}% of total`}
           />
           <StatCard
-            title="Absent Today"
-            value={totalAbsent.toLocaleString()}
-            icon={UserX}
-            color="border-l-red-500"
-            subtitle={`${selectedDate}`}
-          />
-          <StatCard
-            title="Attendance Rate"
-            value={`${attendanceRate}%`}
-            icon={Clock}
-            color="border-l-yellow-500"
-            subtitle="Daily average"
-          />
-          <StatCard
-            title="Training Centers"
-            value={currentBatchData.allDataCenters.length}
-            icon={Target}
-            color="border-l-purple-500"
-            subtitle="Active locations"
+            title="Female Students"
+            value={totalFemales.toLocaleString()}
+            icon={Users}
+            color="border-l-pink-500"
+            subtitle={`${Math.round((totalFemales / totalStudents) * 100)}% of total`}
           />
           <StatCard
             title="Active Courses"
@@ -448,6 +434,51 @@ const Dashboard = () => {
             icon={BookOpen}
             color="border-l-indigo-500"
             subtitle="Across all centers"
+            trend="+2 new courses"
+          />
+          <StatCard
+            title="Instructors"
+            value={totalTeachers}
+            icon={GraduationCap}
+            color="border-l-purple-500"
+            subtitle="Expert faculty"
+          />
+          <StatCard
+            title="Present Today"
+            value={totalPresent.toLocaleString()}
+            icon={UserCheck}
+            color="border-l-green-500"
+            subtitle={`${attendanceRate}% attendance rate`}
+          />
+          <StatCard
+            title="Absent Today"
+            value={totalAbsent.toLocaleString()}
+            icon={UserX}
+            color="border-l-red-500"
+            subtitle={`${100 - attendanceRate}% of students`}
+          />
+          <StatCard
+            title="Completion Rate"
+            value="94%"
+            icon={Award}
+            color="border-l-emerald-500"
+            subtitle="Course completion"
+            trend="+3% this month"
+          />
+          <StatCard
+            title="Avg. Performance"
+            value="8.7/10"
+            icon={TrendingUp}
+            color="border-l-orange-500"
+            subtitle="Student rating"
+            trend="+0.5 improved"
+          />
+          <StatCard
+            title="Training Centers"
+            value={currentBatchData.allDataCenters.length}
+            icon={Target}
+            color="border-l-cyan-500"
+            subtitle="Active locations"
           />
         </div>
 
